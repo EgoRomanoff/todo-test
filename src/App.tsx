@@ -1,35 +1,80 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { ChangeEvent, FormEvent, useState } from "react";
+import "./App.css";
 
-function App() {
-  const [count, setCount] = useState(0)
+interface Task {
+  text: string;
+  completed: boolean;
+}
+
+type TaskList = Task[];
+
+const TASK_LIST_STORAGE_KEY = "todos_task-list";
+
+const getTaskListFromStorage = (): TaskList => {
+  const curList = localStorage.getItem(TASK_LIST_STORAGE_KEY);
+
+  if (!curList) {
+    localStorage.setItem(TASK_LIST_STORAGE_KEY, JSON.stringify([]));
+  }
+
+  return curList ? JSON.parse(curList) : [];
+};
+
+const updateTaskListInStorage = (task: Task) => {
+  const curList = getTaskListFromStorage();
+  curList.push(task);
+
+  localStorage.setItem(TASK_LIST_STORAGE_KEY, JSON.stringify(curList));
+
+  return curList;
+};
+
+const createNewTask = (text: Task["text"]): Task => ({
+  text,
+  completed: false,
+});
+
+const App = () => {
+  const [taskList, setTaskList] = useState<TaskList>(getTaskListFromStorage);
+  const [taskText, setTaskText] = useState("");
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setTaskText(value);
+  };
+
+  const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const newTask = createNewTask(taskText);
+
+    updateTaskListInStorage(newTask);
+    setTaskText("");
+    setTaskList(getTaskListFromStorage);
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+      <form onSubmit={handleFormSubmit}>
+        <input
+          type="text"
+          name="task"
+          placeholder="Что сделать?"
+          value={taskText}
+          onChange={handleInputChange}
+        />
+      </form>
 
-export default App
+      <ul>
+        {taskList.map(({ text, completed }) => (
+          <li key={text}>
+            <span>{text}</span>
+            {completed}
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+};
+
+export default App;
