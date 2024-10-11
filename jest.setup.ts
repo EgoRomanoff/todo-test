@@ -1,0 +1,1 @@
+import './src/__mocks__/localStorage';

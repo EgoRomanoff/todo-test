@@ -23,15 +23,13 @@ const TaskList = ({
     >
       {taskList.length ? (
         <List>
-          {taskList.map(task => {
-            return (
-              <TaskItem
-                key={task.id}
-                task={task}
-                onToggle={onTaskToggle}
-              />
-            );
-          })}
+          {taskList.map(task => (
+            <TaskItem
+              key={task.id}
+              task={task}
+              onToggle={onTaskToggle}
+            />
+          ))}
         </List>
       ) : (
         <Typography sx={{ textAlign: "center", m: "auto" }}>Задач нет</Typography>

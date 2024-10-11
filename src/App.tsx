@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Stack from "@mui/material/Stack";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -23,13 +23,20 @@ const darkTheme = createTheme({
 const App = () => {
   const initialTab = 0;
 
+  const isFirstRender = useRef(true);
+
   const [taskList, setTaskList] = useState<Task[]>(getTaskListFromStorage);
-  const [groupTaskList, setGroupTaskList] = useState<Task[]>([]);
-  const [activeTaskGroup, setActiveTaskGroup] = useState<TaskGroup | null>(
+  const [groupTaskList, setGroupTaskList] = useState<Task[]>(() => []);
+  const [activeTaskGroup, setActiveTaskGroup] = useState<TaskGroup | null>(() =>
     getActiveTaskGroup(initialTab)
   );
 
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+      return
+    }
+
     updateTaskListInStorage(taskList);
   }, [taskList]);
 
