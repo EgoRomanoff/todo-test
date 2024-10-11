@@ -14,20 +14,32 @@ const TaskForm = ({ onSubmit }: { onSubmit?: (newTask: Task) => void }) => {
   const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    const createdTaskText = taskText.trim();
+
+    if (!createdTaskText || createdTaskText.length > 100) return;
+
+    onSubmit?.(createNewTask(createdTaskText));
     setTaskText("");
-    onSubmit?.(createNewTask(taskText));
   };
 
   return (
-    <form onSubmit={handleFormSubmit}>
+    <form
+      onSubmit={handleFormSubmit}
+      data-testid="test-task-form"
+    >
       <TextField
         id="task-input"
         name="task"
         label="Что сделать?"
         variant="outlined"
-        fullWidth 
+        fullWidth
         value={taskText}
         onChange={handleInputChange}
+        slotProps={{
+          htmlInput: {
+            "data-testid": "test-task-input",
+          },
+        }}
       />
     </form>
   );
