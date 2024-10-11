@@ -35,6 +35,10 @@ const TaskTabs = ({
       value={activeTab}
       onChange={handleTabChange}
       aria-label="Списки задач"
+      centered
+      sx={{
+        py: 0,
+      }}
     >
       {taskGroups.map(({ label, order }) => (
         <Tab

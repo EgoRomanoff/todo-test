@@ -1,9 +1,9 @@
 import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
-import Paper from "@mui/material/Paper";
 
 import { Task } from "../../types";
 import TaskItem from "../TaskItem";
+import CustomPaper from "../ui/CustomPaper";
 
 const TaskList = ({
   taskList,
@@ -12,22 +12,31 @@ const TaskList = ({
   taskList: Task[];
   onTaskToggle?: (taskID: Task["id"]) => void;
 }) => {
-  if (!taskList.length) {
-    return <Typography>Задач нет</Typography>;
-  }
-
   return (
-    <Paper component={List}>
-      {taskList.map(task => {
-        return (
-          <TaskItem
-            key={task.id}
-            task={task}
-            onToggle={onTaskToggle}
-          />
-        );
-      })}
-    </Paper>
+    <CustomPaper
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        flexGrow: 1,
+        overflowY: "auto",
+      }}
+    >
+      {taskList.length ? (
+        <List>
+          {taskList.map(task => {
+            return (
+              <TaskItem
+                key={task.id}
+                task={task}
+                onToggle={onTaskToggle}
+              />
+            );
+          })}
+        </List>
+      ) : (
+        <Typography sx={{ textAlign: "center", m: "auto" }}>Задач нет</Typography>
+      )}
+    </CustomPaper>
   );
 };
 

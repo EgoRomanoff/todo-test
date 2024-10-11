@@ -11,7 +11,7 @@ const TaskItem = ({ task, onToggle }: { task: Task; onToggle?: (taskID: Task["id
   };
 
   return (
-    <ListItem key={id}>
+    <ListItem key={id} sx={{ p: 0 }}>
       <Checkbox
         defaultChecked={completed}
         onChange={handleCheckbox}

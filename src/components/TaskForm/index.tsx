@@ -3,7 +3,6 @@ import TextField from "@mui/material/TextField";
 
 import { createNewTask } from "../../utils/createNewTask";
 import { Task } from "../../types";
-import CustomPaper from "../ui/CustomPaper";
 
 const TaskForm = ({ onSubmit }: { onSubmit?: (newTask: Task) => void }) => {
   const [taskText, setTaskText] = useState("");
@@ -20,22 +19,17 @@ const TaskForm = ({ onSubmit }: { onSubmit?: (newTask: Task) => void }) => {
   };
 
   return (
-    <CustomPaper
-      component="form"
-      onSubmit={handleFormSubmit}
-      sx={{
-        py: 2,
-      }}
-    >
+    <form onSubmit={handleFormSubmit}>
       <TextField
         id="task-input"
         name="task"
         label="Что сделать?"
-        variant="standard"
+        variant="outlined"
+        fullWidth 
         value={taskText}
         onChange={handleInputChange}
       />
-    </CustomPaper>
+    </form>
   );
 };
 

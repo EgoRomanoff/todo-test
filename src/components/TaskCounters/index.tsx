@@ -1,5 +1,6 @@
-import CustomPaper from "../ui/CustomPaper";
 import { Task, TaskGroup } from "../../types";
+import Box from "@mui/material/Box";
+import { getDeclension } from "../../utils/getDeclension";
 
 const TaskCounters = ({
   taskList,
@@ -10,22 +11,30 @@ const TaskCounters = ({
   activeGroup: TaskGroup | null;
   groupTasks: Task[];
 }) => {
+  const total = taskList.length;
+  const noun = getDeclension(total, ["задача", "задачи", "задач"]);
+  const { order, label } = activeGroup || {};
+
   return (
-    <CustomPaper
+    <Box
       component="p"
       sx={{
         display: "flex",
         justifyContent: "space-between",
+        fontSize: 14,
+        m: 0,
       }}
     >
-      <span>Всего {taskList.length} задач</span>
+      <span>
+        Всего {total} {noun}
+      </span>
 
-      {activeGroup && activeGroup.order !== 0 && (
+      {!!order && order !== 0 && (
         <span>
-          {activeGroup.label}: {groupTasks.length}
+          {label}: {groupTasks.length}
         </span>
       )}
-    </CustomPaper>
+    </Box>
   );
 };
 
