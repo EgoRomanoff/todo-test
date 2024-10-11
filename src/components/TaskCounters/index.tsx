@@ -1,6 +1,7 @@
-import { Task, TaskGroup } from "../../types";
 import Box from "@mui/material/Box";
-import { getDeclension } from "../../utils/getDeclension";
+
+import type { Task, TaskGroup } from "@/types";
+import { getDeclension } from "@/utils/getDeclension";
 
 const TaskCounters = ({
   taskList,

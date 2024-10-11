@@ -19,6 +19,3 @@ export const getDeclension = (
 
   return many;
 };
-
-// // Пример использования:
-// const apples = (count: number) => `${count} ${getNounDeclension(count, 'яблоко', 'яблока', 'яблок')}`;
