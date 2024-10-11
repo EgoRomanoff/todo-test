@@ -1,4 +1,4 @@
-import Paper from "@mui/material/Paper";
+import CustomPaper from "../ui/CustomPaper";
 import { Task, TaskGroup } from "../../types";
 
 const TaskCounters = ({
@@ -11,10 +11,13 @@ const TaskCounters = ({
   groupTasks: Task[];
 }) => {
   return (
-    <Paper component="p" sx={{
-      display: 'flex',
-      justifyContent: 'space-between',
-    }}>
+    <CustomPaper
+      component="p"
+      sx={{
+        display: "flex",
+        justifyContent: "space-between",
+      }}
+    >
       <span>Всего {taskList.length} задач</span>
 
       {activeGroup && activeGroup.order !== 0 && (
@@ -22,7 +25,7 @@ const TaskCounters = ({
           {activeGroup.label}: {groupTasks.length}
         </span>
       )}
-    </Paper>
+    </CustomPaper>
   );
 };
 

@@ -1,10 +1,10 @@
 import { SyntheticEvent, useState } from "react";
-import Paper from "@mui/material/Paper";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 
 import { TAB_ARIA_PREFIX, TABPANEL_ARIA_PREFIX, TASK_GROUPS } from "../../constants";
 import { TaskGroup } from "../../types";
+import CustomPaper from "../ui/CustomPaper";
 
 const a11yTabProps = (key: number) => {
   return {
@@ -30,7 +30,7 @@ const TaskTabs = ({
   };
 
   return (
-    <Paper
+    <CustomPaper
       component={Tabs}
       value={activeTab}
       onChange={handleTabChange}
@@ -43,7 +43,7 @@ const TaskTabs = ({
           {...a11yTabProps(order)}
         />
       ))}
-    </Paper>
+    </CustomPaper>
   );
 };
 

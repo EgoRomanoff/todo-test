@@ -1,9 +1,9 @@
 import { ChangeEvent, FormEvent, useState } from "react";
-import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 
 import { createNewTask } from "../../utils/createNewTask";
 import { Task } from "../../types";
+import CustomPaper from "../ui/CustomPaper";
 
 const TaskForm = ({ onSubmit }: { onSubmit?: (newTask: Task) => void }) => {
   const [taskText, setTaskText] = useState("");
@@ -20,9 +20,12 @@ const TaskForm = ({ onSubmit }: { onSubmit?: (newTask: Task) => void }) => {
   };
 
   return (
-    <Paper
+    <CustomPaper
       component="form"
       onSubmit={handleFormSubmit}
+      sx={{
+        py: 2,
+      }}
     >
       <TextField
         id="task-input"
@@ -32,7 +35,7 @@ const TaskForm = ({ onSubmit }: { onSubmit?: (newTask: Task) => void }) => {
         value={taskText}
         onChange={handleInputChange}
       />
-    </Paper>
+    </CustomPaper>
   );
 };
 
