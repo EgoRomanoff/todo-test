@@ -5,6 +5,23 @@ import { TASK_LIST_STORAGE_KEY } from "@/constants";
 import type { Task } from "@/types";
 
 const TEST_TASK_TEXT: string = "Новая тестовая задача";
+const EXISTING_DATA = JSON.stringify([
+  {
+    id: "1",
+    text: "Задача 1",
+    completed: false,
+  },
+  {
+    id: "2",
+    text: "Задача 2",
+    completed: true,
+  },
+  {
+    id: "3",
+    text: "Задача 3",
+    completed: false,
+  },
+]);
 
 describe("Компонент App", () => {
   beforeEach(() => {
@@ -25,8 +42,7 @@ describe("Компонент App", () => {
   });
 
   it("не должен устанавливать данные в localStorage, если они уже есть", () => {
-    const existingData = JSON.stringify([1, 2, 3]);
-    (localStorage.getItem as jest.Mock).mockReturnValueOnce(existingData);
+    (localStorage.getItem as jest.Mock).mockReturnValueOnce(EXISTING_DATA);
 
     render(<App />);
 
@@ -50,5 +66,26 @@ describe("Компонент App", () => {
       expect.arrayContaining<Task[]>([expect.objectContaining({ text: TEST_TASK_TEXT })])
     );
     expect(input.value).toBe("");
+  });
+
+  it("должен менять статус конкретной задачи и корректно отображать её в TaskList и localStorage", () => {
+    localStorage.setItem(TASK_LIST_STORAGE_KEY, EXISTING_DATA);
+
+    render(<App />);
+
+    const taskCheckbox1 = screen.getByTestId<HTMLInputElement>("test-task-checkbox-1");
+    const taskCheckbox2 = screen.getByTestId<HTMLInputElement>("test-task-checkbox-2");
+
+    fireEvent.click(taskCheckbox1);
+    fireEvent.click(taskCheckbox2);
+
+    const currentTaskList = JSON.parse(localStorage.getItem(TASK_LIST_STORAGE_KEY)!);
+    const task1 = currentTaskList.find((task: Task) => task.id === "1");
+    const task2 = currentTaskList.find((task: Task) => task.id === "2");
+
+    expect(taskCheckbox1.checked).toBe(true);
+    expect(taskCheckbox2.checked).toBe(false);
+    expect(task1!.completed).toBe(true);
+    expect(task2!.completed).toBe(false);
   });
 });
